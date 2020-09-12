@@ -10,10 +10,16 @@ import UIKit
 import AVFoundation
 import AVKit
 
+
 class ViewController: UIViewController {
   
     let testview: PlayerView = .init()
     let player = AVPlayer(url: URL(string: "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_adv_example_hevc/master.m3u8")!)
+    
+    var User: [String] = ["test1","test2","test3"]
+    
+    @IBOutlet weak var tableview: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(testview)
@@ -24,8 +30,11 @@ class ViewController: UIViewController {
             testview.topAnchor.constraint(equalTo: self.view.topAnchor),
             testview.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
         ])
+        tableview.delegate = self
+        tableview.dataSource = self
        
         testview.player = player
+        
         
     }
     
@@ -39,6 +48,23 @@ class ViewController: UIViewController {
     @IBAction func stopButton(_ sender: Any) {
         player.pause()
     }
+    
+    
+    
+}
+
+extension ViewController:UITableViewDelegate,UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return User.count
+        
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") ?? UITableViewCell(style: .default, reuseIdentifier: "Cell")
+        cell.textLabel?.text = User[indexPath.row]
+        return cell
+    }
+    
     
     
     
